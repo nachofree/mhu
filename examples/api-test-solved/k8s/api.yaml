@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pythonapi
+  name: pythonapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pythonapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pythonapi
+    spec:
+      containers:
+      - image: joelongtoe/api
+        name: api
+        resources: {}
+status: {}
