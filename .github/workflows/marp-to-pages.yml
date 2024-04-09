@@ -1,0 +1,68 @@
+name: marp-to-pages
+concurrency: marp-to-pages
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Copy all
+        run: mkdir build && cp -R web/* build/
+
+      - name: generate some markdown index pages
+        working-directory: build
+        shell: bash
+        run: |
+          for f in [^_]* [^_]**/*
+          do 
+            if [ -d $f ] 
+            then
+              echo -e "#### Content for $f\n" > $f/index.md
+              for files in $f/* 
+              do 
+                fn=$(basename $files)
+                filename=${fn%.*}
+                  if [ $fn != "index.md" ]
+                  then
+                    echo "- [$filename](./$fn)" >> $f/index.md
+                  fi
+              done
+            fi
+          done
+
+
+      - name: Marp Build (slides folder)
+        uses: docker://marpteam/marp-cli:v1.7.0
+        with:
+          args: -I web/slides -o build/slides
+        env:
+          MARP_USER: root:root
+
+      - name: Deploy preview
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./build/
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+
+      - name: Deploy production
+        if: ${{ github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ./build/
+          clean-exclude: pr-preview/
+
+
