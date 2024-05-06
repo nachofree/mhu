@@ -373,17 +373,10 @@ The second does not automatically invoke shell <code>/bin/sh -c</code>.</p>
 <p>Each node has a Kubelet (an agent) which manages node and communicates with Kubernetes (K8s) master. They will also have docker installed.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48">
-<h4>Installation from Docker desktop</h4>
-<p>Follow the instructions that are <a href="https://docs.docker.com/desktop/kubernetes/">here</a>.</p>
-<ul>
-<li>When I installed on Linux I had to edit <code>~/.kube/config</code> with this line: <code>server: https://localhost:6443</code>. Then I had to install kubectl as shown <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">here</a></li>
-</ul>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49">
 <h4>Verify installation</h4>
 <p>From a terminal, you should be able to <code>kubectl get nodes</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49">
 <h4>Nodes</h4>
 <ul>
 <li>Where the pods run</li>
@@ -393,15 +386,15 @@ The second does not automatically invoke shell <code>/bin/sh -c</code>.</p>
 <li>Also run a container runtime (like docker)</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50">
 <h4>Now what?</h4>
 <p>We want to put container(ized) applications on the cluster.  Create a k8s configuration file. Master will schedule nodes to run the container.  These containers are monitored. If it goes down, the cluster <code>self heals</code> by bringing it up again.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51">
 <h4>How?</h4>
 <p><img src="https://d33wubrfki0l68.cloudfront.net/152c845f25df8e69dd24dd7b0836a289747e258a/4a1d2/docs/tutorials/kubernetes-basics/public/images/module_02_first_app.svg" alt="" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-marpit-fragments="1">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-marpit-fragments="1">
 <h4>What is a pod?</h4>
 <p>A group of one or more (docker) containers, along with their volumes, networks, and other information about the container.  Containers should only be scheduled together in a single Pod if they are tightly coupled and need to share resources such as disk.</p>
 <p>Containers within a pod share an IP address and port space, and can find each other via localhost.</p>
@@ -409,13 +402,13 @@ The second does not automatically invoke shell <code>/bin/sh -c</code>.</p>
 <li data-marpit-fragment="1">So they must coordinate usage of ports</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53">
 <h4>Create our first pod</h4>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    kubectl run kubernetes-bootcamp --image=docker.io/jocatalin/kubernetes-bootcamp:v1 --port=8080
     kubectl get pods
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="55">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54">
 <h4>Hmmm??</h4>
 <p>This command:</p>
 <ul>
@@ -423,29 +416,29 @@ The second does not automatically invoke shell <code>/bin/sh -c</code>.</p>
 <li>scheduled the application to run on that Node</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="56">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="55">
 <h4>Pod scheduling</h4>
 <p>When a node dies:</p>
 <ul>
 <li>Pods on that node are lost (though your controller might make cluster back to desired state by creation of identical pods on a different host)</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="56">
 <h4>More about pods</h4>
 <ul>
 <li>Containers in different pods have distinct ip addresses</li>
 <li>If a node dies, the pods scheduled to that node are scheduled for deletion, after a timeout period. A given pod (as defined by a UID) is not “rescheduled” to a new node; instead, it can be replaced by an identical pod, with even the same name if desired, but with a new UID</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57">
 <h4>Pod Examples</h4>
 <p><img src="https://d33wubrfki0l68.cloudfront.net/fe03f68d8ede9815184852ca2a4fd30325e5d15a/98064/docs/tutorials/kubernetes-basics/public/images/module_03_pods.svg" alt="" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58">
 <h4>Another view</h4>
 <p><img src="https://d33wubrfki0l68.cloudfront.net/5cb72d407cbe2755e581b6de757e0d81760d5b86/a9df9/docs/tutorials/kubernetes-basics/public/images/module_03_nodes.svg" alt="" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="60">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59">
 <h4>More Pod Commands</h4>
 <ul>
 <li><code>kubectl get pods</code></li>
@@ -455,19 +448,19 @@ The second does not automatically invoke shell <code>/bin/sh -c</code>.</p>
 <li><code>kubectl delete pod $PODNAME</code></li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="60">
 <h4>A note about pods</h4>
 <p>You'll rarely create individual Pods directly in Kubernete. This is because Pods are designed as relatively ephemeral, disposable entities. When a Pod gets created (directly by you, or indirectly by a controller), the new Pod is scheduled to run on a Node in your cluster. The Pod remains on that node until the Pod finishes execution, the Pod object is deleted, the Pod is evicted for lack of resources, or the node fails.</p>
 <p>Better to use a deployment.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61">
 <h4>What is a deployment</h4>
 <ul>
 <li>A Deployment provides declarative updates for Pods</li>
 <li>You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="63" data-marpit-fragments="4">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62" data-marpit-fragments="4">
 <h4>Sample</h4>
 <ul>
 <li><code>kubectl apply -f https://k8s.io/examples/controllers/nginx-deployment.yaml</code></li>
@@ -479,15 +472,15 @@ The second does not automatically invoke shell <code>/bin/sh -c</code>.</p>
 <li data-marpit-fragment="4">AVAILABLE = how many are usable right now</li>
 </ul>
 </li>
-<li>Delete a few containers in docker desktop</li>
+<li>Delete a few containers</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="63">
 <h4>How does this relate to pods?</h4>
 <p>Run <code>kubectl get pods</code> to look at what the deployment created.<br />
 Also, <code>kubectl describe deployment</code>.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="65">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64">
 <h4>Kubernetes services (Quick overview)</h4>
 <p>We didn't have time to discuss networking in docker, but it is more critical to understand how networking works on K8S.  These are defined as <code>services</code>.</p>
 <ul>
@@ -496,7 +489,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>must have a way of tracking how to route requests to the backend pods</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="66">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="65">
 <h4>Kubernetes services confusion?</h4>
 <ul>
 <li>a node has an ip address:port</li>
@@ -505,7 +498,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>so containers in a pod must coordinate port usage</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="66">
 <h4>Kubernetes services howto</h4>
 <ul>
 <li><code>kubectl get services</code></li>
@@ -515,19 +508,19 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li><code>curl localhost:31894</code> (or whatever port it is)</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67">
 <h4>Scaling</h4>
 <p>This is where we change the number of replicas of a deployment.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68">
 <h4>Scaling image 1</h4>
 <p><img src="https://d33wubrfki0l68.cloudfront.net/043eb67914e9474e30a303553d5a4c6c7301f378/0d8f6/docs/tutorials/kubernetes-basics/public/images/module_05_scaling1.svg" alt="" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69">
 <h4>Scaling image 2</h4>
 <p><img src="https://d33wubrfki0l68.cloudfront.net/30f75140a581110443397192d70a4cdb37df7bfc/b5f56/docs/tutorials/kubernetes-basics/public/images/module_05_scaling2.svg" alt="" /></p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="71">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70">
 <h4>Scaling</h4>
 <ul>
 <li>Scaling out a Deployment will ensure new Pods are created and scheduled to Nodes with available resources. Scaling in will reduce the number of Pods to the new desired state.</li>
@@ -535,7 +528,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>Services will also make sure that traffic is only sent to pods that are available.</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="72" data-marpit-fragments="5">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="71" data-marpit-fragments="5">
 <h4>Scaling</h4>
 <ul>
 <li>Scale to 4
@@ -559,7 +552,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>Can you scale to 2?</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="73">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="72">
 <h4>Clean up</h4>
 <p>Delete everything:</p>
 <ul>
@@ -568,11 +561,11 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li><code>kubectl delete svc my-nginx-np</code></li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="74">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="73">
 <h4>Example</h4>
 <p>See friendly-hello example in git repo.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="75">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="74">
 <h4>Quiz</h4>
 <ul>
 <li><code>kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1</code></li>
@@ -585,11 +578,11 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>Scale back to 2, did things change?</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="76">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="75">
 <h4>Example</h4>
 <p>See api-test-solved kubernetes example.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="77">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="76">
 <h4>YAML</h4>
 <p>Can provide an easier way define our k8s objects.</p>
 <ul>
@@ -598,7 +591,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>Flexibility: You’ll be able to create much more complex structures using YAML than you can on the command line</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="78">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="77">
 <h4>YAML</h4>
 <ul>
 <li>YAML is a superset of JSON</li>
@@ -607,7 +600,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <li>Don't use tabs</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="79">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="78">
 <h4>Pod Example</h4>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    ---
     apiVersion: v1
@@ -628,7 +621,7 @@ Also, <code>kubectl describe deployment</code>.</p>
            – containerPort: 88
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="80">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="79">
 <h4>Action</h4>
 <ul>
 <li>
@@ -641,7 +634,7 @@ Also, <code>kubectl describe deployment</code>.</p>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    kubectl delete -f pod.yaml
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="81">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="80">
 <h4>YAML Deployment</h4>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    ---
     apiVersion: apps/v1
@@ -670,7 +663,7 @@ Also, <code>kubectl describe deployment</code>.</p>
     status: {}
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="82">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="81">
 <h4>YAML Service</h4>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    ---
     apiVersion: v1
@@ -693,7 +686,7 @@ Also, <code>kubectl describe deployment</code>.</p>
       loadBalancer: {}
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="83">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="82">
 <h4>Easy yaml creation</h4>
 <p>Create a deployment named mydeployment with image Nginx</p>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    kubectl create deployment mydeployment \
@@ -701,7 +694,7 @@ Also, <code>kubectl describe deployment</code>.</p>
         --dry-run=client -o yaml &gt; mydeployment.yaml        
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="84">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="83">
 <h4>Easy yaml creation</h4>
 <p>Create a NodePort service YAML for deployment mydeployment with service port 8080</p>
 <pre><code><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>    kubectl expose deployment mydeployment \
@@ -711,7 +704,7 @@ Also, <code>kubectl describe deployment</code>.</p>
         --dry-run=client -o yaml &gt; mydeployment-service.yaml
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="85">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="84">
 <h4>Yaml example</h4>
 <p>See api-test-solved/k8s</p>
 </section>
