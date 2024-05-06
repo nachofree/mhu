@@ -764,3 +764,39 @@ Create a NodePort service YAML for deployment mydeployment with service port 808
 #### Yaml example
 
 See api-test-solved/k8s
+
+------------------------------------------------------------------
+
+#### Android and docker
+
+- This will NOT work on a virtual machine.
+- Containers do NOT work well for Android development since you must have a physical machine
+- If you must use a physical machine, you may as well just install the ADB and related things on your machine.
+- Containers are very useful for microservices, not as useful for mobile development (unless you are creating a backend API)
+
+------------------------------------------------------------------
+
+#### Can it be done?
+
+Instructions are [here](https://github.com/amrsa1/Android-Emulator-image). Since I didn't give you a physical machine, you will just have to watch me do it.
+
+- my machine name is `othello`. Directory is `/home/joe/Android-Emulator-image`
+- `docker build -t android-emulator .`
+- `docker run -it --privileged -d -p 5900:5900 --name androidContainer --privileged android-emulator`
+- `docker exec --privileged  -it androidContainer bash -c "./start_appium.sh"`
+- `docker exec --privileged -it -e EMULATOR_TIMEOUT=300 androidContainer bash -c "./start_emu_headless.sh"`
+- `docker exec --privileged -it androidContainer bash -c "./start_vnc.sh"`
+- Now create ssh tunnel to view: `ssh joe@ssh.cs.utahtech.edu -L 5900:othello:5900`
+- Connect to `localhost:5900`, start a dash shell and `./start_emu.sh`.
+- The emulator shoudl start.
+
+------------------------------------------------------------------
+
+#### Another way
+
+Instructions are [here](https://github.com/budtmo/docker-android)
+
+- `docker run -d -p 6080:6080 -p 4723:4723 -e EMULATOR_DEVICE="Samsung Galaxy S10" -e WEB_VNC=true -e APPIUM=true --device /dev/kvm --name android-container budtmo/docker-android:emulator_11.0`
+- Then make a tunnel and connect to port 6080 in a browser.
+
+
