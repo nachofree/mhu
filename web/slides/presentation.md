@@ -401,14 +401,6 @@ Each node has a Kubelet (an agent) which manages node and communicates with Kube
 
 ------------------------------------------------------------------
 
-#### Installation from Docker desktop
-
-Follow the instructions that are [here](https://docs.docker.com/desktop/kubernetes/). 
-
-- When I installed on Linux I had to edit `~/.kube/config` with this line: `server: https://localhost:6443`. Then I had to install kubectl as shown [here](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
-
-------------------------------------------------------------------
-
 #### Verify installation
 
 From a terminal, you should be able to `kubectl get nodes`.
@@ -522,7 +514,7 @@ Better to use a deployment.
   * CURRENT = how many are running
   * UP-TO-DATE = how many replicas were changed to match desired state
   * AVAILABLE = how many are usable right now
-- Delete a few containers in docker desktop
+- Delete a few containers 
 
 ------------------------------------------------------------------
 
